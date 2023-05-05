@@ -6,6 +6,10 @@ from pygame import Rect, Surface
 from pygame.image import load
 
 WIDTH, HEIGHT = 600, 150
+GRAVITY = 0.6
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+BACKGROUND_COLOR = (235, 235, 235)
 
 
 def transform_image(image, size_x=-1, size_y=-1, colorkey=None):
@@ -53,8 +57,6 @@ def load_sprite_sheet(path, nx, ny, scale_x=-1, scale_y=-1, colorkey=None):
 
 
 def create_score(number):
-    if number < 0:
-        return
     number = str(number).rjust(5, "0")
     number = [int(digit) for digit in number]
 
