@@ -39,6 +39,7 @@ def load_sprite_sheet(path, nx, ny, scale_x=-1, scale_y=-1, colorkey=None):
 
     size_y = sheet_rect.height / ny
     nx = [nx] if isinstance(nx, int) else nx
+    scale_x = [scale_x] if isinstance(scale_x, int) else scale_x
     size_x_list = [sheet_rect.width / nx_ele for nx_ele in nx]
     sprites = []
 
