@@ -10,7 +10,7 @@ import argparse
 
 
 def get_args():
-    parser = argparse.ArgumentParser("Using RL to play dinorun")
+    parser = argparse.ArgumentParser("Use RL to play dinorun")
     parser.add_argument("--batch_size", type=int, default=64, help="The number of frame per batch")
     parser.add_argument("--optimizer", type=str, choices=["adam", "adamw"], default="adamw")
     parser.add_argument("--lr", type=float, default=1e-4)
