@@ -3,7 +3,7 @@ from pygame.sprite import collide_mask
 from pygame.surfarray import array3d
 from pygame import display, time
 import random
-from utils import *
+from src.utils import *
 import torch
 import pygame
 import os
@@ -68,7 +68,7 @@ class Dino:
 
     def update(self):
         if self.is_jumping:
-            self.movement[1] = self.movement + GRAVITY
+            self.movement[1] = self.movement[1] + GRAVITY
             self.index = 0
         elif self.is_blinking:
             if self.index == 0:
@@ -316,7 +316,7 @@ class DinoGame(object):
                 self.player_dino.is_jumping = True
                 self.player_dino.movement[1] = -1 * self.player_dino.jump_speed
         elif action == 2:
-            if not (self.player_dino.is_jumping and self.player_dino.is_dead) and self.playerDino.rect.bottom == int(
+            if not (self.player_dino.is_jumping and self.player_dino.is_dead) and self.player_dino.rect.bottom == int(
                 0.98 * HEIGHT
             ):
                 self.player_dino.is_ducking = True

@@ -68,6 +68,8 @@ def train(opt):
             prediction = model(state.cuda())[0]
         else:
             prediction = model(state)[0]
+
+        # Threshold for choosing exploration or exploitation
         epsilon = opt.final_epsilon + (
             max(opt.num_decay_iters - iter, 0) * (opt.initial_epsilon - opt.final_epsilon) / opt.num_decay_iters
         )
@@ -127,3 +129,8 @@ def train(opt):
             torch.save(checkpoint, checkpoint_path)
             with open(memory_path, "wb") as f:
                 pickle.dump(replay_memory, f, protocol=pickle.HIGHEST_PROTOCOL)
+
+
+if __name__ == "__main__":
+    opt = get_args()
+    train(opt)
