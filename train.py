@@ -30,9 +30,11 @@ def train(opt):
     model = DeepQNet()
 
     if torch.cuda.is_available():
+        device = torch.device("cuda")
         torch.cuda.manual_seed(42)
         model.cuda()
     else:
+        device = torch.device("cpu")
         torch.manual_seed(42)
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=opt.lr)
@@ -43,7 +45,7 @@ def train(opt):
     memory_path = os.path.join(opt.saved_folder, "replay_memory.pkl")
 
     if os.path.isfile(checkpoint_path):
-        checkpoint = torch.load(checkpoint_path)
+        checkpoint = torch.load(checkpoint_path, map_location=device)
         iter = checkpoint["iter"] + 1
         model.load_state_dict(checkpoint["model_state_dict"])
         optimizer.load_state_dict(checkpoint["optimizer"])

@@ -43,16 +43,16 @@ class Dino:
 
         # First frame
         self.image = self.images_run[0]
-        self.index = 0
-        self.counter = 0
-        self.score = 0
+        self.index = 0  # index of image in image list
+        self.counter = 0  # count to determine the frequency of changing the self.index
+        self.score = 0  # score of game
 
         self.is_jumping = False
         self.is_ducking = False
         self.is_blinking = False
         self.is_dead = False
 
-        self.movement = [0, 0]
+        self.movement = [0, 0]  # [horizontal, vertical]
         self.jump_speed = 11.5
 
         self.running_width = self.rect.width
@@ -77,7 +77,6 @@ class Dino:
             else:
                 if self.counter % 20 == 19:
                     self.index = (self.index + 1) % 2
-
         elif self.is_ducking:
             if self.counter % 5 == 0:
                 self.index = (self.index + 1) % 2
@@ -89,7 +88,7 @@ class Dino:
             self.index = 4
 
         if self.is_ducking:
-            self.image = self.images_duck[(self.index) % 2]
+            self.image = self.images_duck[self.index % 2]
             self.rect.width = self.ducking_width
         else:
             self.image = self.images_run[self.index]
@@ -157,7 +156,7 @@ class Ptera(Sprite):
             self.index = (self.index + 1) % 2
         self.image = self.images[self.index]
         self.rect = self.rect.move(self.movement)
-        self.counter = self.counter + 1
+        self.counter += 1
         if self.rect.right < 0:
             self.kill()
 
@@ -236,6 +235,7 @@ class Scoreboard:
             self.rect.left = WIDTH * 0.89
         else:
             self.rect.left = x
+
         if y == -1:
             self.rect.top = HEIGHT * 0.1
         else:
@@ -275,35 +275,36 @@ class DinoGame(object):
         Ptera.containers = self.pteras
         Cloud.containers = self.clouds
 
-        self.retbutton_image, self.retbutton_rect = load_image(
-            path=os.path.join("assets", "replay_button.png"),
-            size_x=35,
-            size_y=31,
-            colorkey=-1,
-        )
-        self.gameover_image, self.gameover_rect = load_image(
-            path=os.path.join("assets", "game_over.png"),
-            size_x=190,
-            size_y=11,
-            colorkey=-1,
-        )
-        self.temp_images, self.temp_rect = load_sprite_sheet(
-            path=os.path.join("assets", "numbers.png"),
-            nx=12,
-            ny=1,
-            scale_x=11,
-            scale_y=int(11 * 6 / 5),
-            colorkey=-1,
-        )
+        # TODO: add replay button and high score
+        # self.retbutton_image, self.retbutton_rect = load_image(
+        #     path=os.path.join("assets", "replay_button.png"),
+        #     size_x=35,
+        #     size_y=31,
+        #     colorkey=-1,
+        # )
+        # self.gameover_image, self.gameover_rect = load_image(
+        #     path=os.path.join("assets", "game_over.png"),
+        #     size_x=190,
+        #     size_y=11,
+        #     colorkey=-1,
+        # )
+        # self.temp_images, self.temp_rect = load_sprite_sheet(
+        #     path=os.path.join("assets", "numbers.png"),
+        #     nx=12,
+        #     ny=1,
+        #     scale_x=11,
+        #     scale_y=int(11 * 6 / 5),
+        #     colorkey=-1,
+        # )
 
-        self.HI_image = Surface((22, int(11 * 6 / 5)))
-        self.HI_rect = self.HI_image.get_rect()
-        self.HI_image.fill(BACKGROUND_COLOR)
-        self.HI_image.blit(self.temp_images[10], self.temp_rect)
-        self.temp_rect.left += self.temp_rect.width
-        self.HI_image.blit(self.temp_images[11], self.temp_rect)
-        self.HI_rect.top = HEIGHT * 0.1
-        self.HI_rect.left = WIDTH * 0.73
+        # self.HI_image = Surface((22, int(11 * 6 / 5)))
+        # self.HI_rect = self.HI_image.get_rect()
+        # self.HI_image.fill(BACKGROUND_COLOR)
+        # self.HI_image.blit(self.temp_images[10], self.temp_rect)
+        # self.temp_rect.left += self.temp_rect.width
+        # self.HI_image.blit(self.temp_images[11], self.temp_rect)
+        # self.HI_rect.top = HEIGHT * 0.1
+        # self.HI_rect.left = WIDTH * 0.73
 
     def step(self, action, record=False):
         reward = 0.1
