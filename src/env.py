@@ -3,7 +3,7 @@ from pygame.sprite import collide_mask
 from pygame.surfarray import array3d
 from pygame import display, time
 import random
-from src.utils import *
+from utils import *
 import torch
 import pygame
 import os
@@ -308,20 +308,21 @@ class DinoGame(object):
 
     def step(self, action, record=False):
         reward = 0.1
-        if action == 0:
+        if action == 0:  # normally run
             reward += 0.01
             self.player_dino.is_ducking = False
-        elif action == 1:
+        elif action == 1:  # jump
             self.player_dino.is_ducking = False
             if self.player_dino.rect.bottom == int(0.98 * HEIGHT):
                 self.player_dino.is_jumping = True
                 self.player_dino.movement[1] = -1 * self.player_dino.jump_speed
-        elif action == 2:
+        elif action == 2:  # duck
             if not (self.player_dino.is_jumping and self.player_dino.is_dead) and self.player_dino.rect.bottom == int(
                 0.98 * HEIGHT
             ):
                 self.player_dino.is_ducking = True
 
+        # Check collision to the cacti
         for c in self.cacti:
             c.movement[0] = -1 * self.game_speed
             if collide_mask(self.player_dino, c):
@@ -333,6 +334,7 @@ class DinoGame(object):
                     reward = 1
                     break
 
+        # Check collision to the pteras
         for p in self.pteras:
             p.movement[0] = -1 * self.game_speed
             if collide_mask(self.player_dino, p):
@@ -398,8 +400,8 @@ class DinoGame(object):
 
         self.counter = self.counter + 1
 
-        if self.game_over:
-            self.__init__()
+        # if self.game_over:
+        #     self.__init__()
 
         state = array3d(state)
         if record:
@@ -419,5 +421,17 @@ class DinoGame(object):
 
 if __name__ == "__main__":
     game = DinoGame()
-    while True:
-        state, reward, done = game.step((0, 2))
+    while not game.game_over:
+        clock.tick(60)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+
+        action = 0
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            action = 1
+        elif keys[pygame.K_DOWN]:
+            action = 2
+
+        game.step(action=action)
