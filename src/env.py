@@ -3,7 +3,7 @@ from pygame.sprite import collide_mask
 from pygame.surfarray import array3d
 from pygame import display, time
 import random
-from utils import *
+from src.utils import *
 import torch
 import pygame
 import os
